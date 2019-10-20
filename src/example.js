@@ -6,17 +6,27 @@ const containerStyle = {
   height: 500,
   border: "1px solid gray"
 };
+const config = [
+  "bishop",
+  "knight",
+  "king",
+  "other1",
+  "other2",
+  "pawn",
+  "queen",
+  "rook"
+];
 /**
  * The Chessboard Tutorial Application
  */
 const ChessboardTutorialApp = () => {
-  const [knightPos, setKnightPos] = useState([1, 7]);
+  const [widgetPos, setWidgetPos] = useState(config);
   // the observe function will return an unsubscribe callback
-  useEffect(() => observe(newPos => setKnightPos(newPos)));
+  useEffect(() => observe(newPos => setWidgetPos(newPos)));
   return (
     <div>
       <div style={containerStyle}>
-        <Board knightPosition={knightPos} />
+        <Board widgetPosition={widgetPos} />
       </div>
     </div>
   );

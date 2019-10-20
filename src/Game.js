@@ -1,8 +1,20 @@
-let knightPosition = [1, 7];
+let knightPosition = [
+  "bishop",
+  "knight",
+  "king",
+  "other1",
+  "other2",
+  "pawn",
+  "queen",
+  "rook"
+];
 let observers = [];
+let replacedIndex;
+
 function emitChange() {
   observers.forEach(o => o && o(knightPosition));
 }
+
 export function observe(o) {
   observers.push(o);
   emitChange();
@@ -10,16 +22,24 @@ export function observe(o) {
     observers = observers.filter(t => t !== o);
   };
 }
-export function canMoveKnight(toX, toY) {
-  const [x, y] = knightPosition;
-  const dx = toX - x;
-  const dy = toY - y;
-  return (
-    (Math.abs(dx) === 2 && Math.abs(dy) === 1) ||
-    (Math.abs(dx) === 1 && Math.abs(dy) === 2)
-  );
+
+export function getReplaceIndex(value) {
+  replacedIndex = value;
 }
-export function moveKnight(toX, toY) {
-  knightPosition = [toX, toY];
+
+export function moveKnight(i) {
+  const movedTo = i;
+  const movedFrom = replacedIndex;
+
+  // swap positions in index
+  const newPositions = ([knightPosition[movedTo], knightPosition[movedFrom]] = [
+    knightPosition[movedFrom],
+    knightPosition[movedTo]
+  ]);
+  
+  // pass unchanged indices with new
+  knightPosition = [...knightPosition, newPositions];
+  
+  // publish the change
   emitChange();
 }

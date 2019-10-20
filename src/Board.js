@@ -1,6 +1,14 @@
 import React from "react";
 import { BoardSquare } from "./BoardSquare";
-import { Knight } from "./Knight";
+import { Knight } from "./pieces/Knight";
+import { Bishop } from "./pieces/Bishop";
+import { King } from "./pieces/King";
+import { Other1 } from "./pieces/Other1";
+import { Other2 } from "./pieces/Other2";
+import { Pawn } from "./pieces/Pawn";
+import { Queen } from "./pieces/Queen";
+import { Rook } from "./pieces/Rook";
+
 /** Styling properties applied to the board element */
 const boardStyle = {
   width: "100%",
@@ -14,26 +22,47 @@ const squareStyle = { width: "12.5%", height: "12.5%" };
  * The chessboard component
  * @param props The react props
  */
-const Board = ({ knightPosition: [knightX, knightY] }) => {
+
+const Board = ({ widgetPosition }) => {
   function renderSquare(i) {
-    const x = i % 8;
-    const y = Math.floor(i / 8);
     return (
       <div key={i} style={squareStyle}>
-        <BoardSquare x={x} y={y}>
-          {renderPiece(x, y)}
+        <BoardSquare index={i}>
+          {renderPiece(i)}
         </BoardSquare>
       </div>
     );
   }
-  function renderPiece(x, y) {
-    const isKnightHere = x === knightX && y === knightY;
-    return isKnightHere ? <Knight /> : null;
+
+  function renderPiece(i) {
+    switch (widgetPosition[i]) {
+      case "bishop":
+        return <Bishop i={i} />;
+      case "king":
+        return <King i={i} />;
+      case "other1":
+        return <Other1 i={i} />;
+      case "other2":
+        return <Other2 i={i} />;
+      case "pawn":
+        return <Pawn i={i} />;
+      case "queen":
+        return <Queen i={i} />;
+      case "knight":
+        return <Knight i={i} />;
+      case "rook":
+        return <Rook i={i} />;
+      default:
+        return null;
+    }
   }
+
   const squares = [];
-  for (let i = 0; i < 64; i += 1) {
+  for (let i = 0; i < 8; i += 1) {
     squares.push(renderSquare(i));
   }
+
   return <div style={boardStyle}>{squares}</div>;
 };
+
 export default Board;
